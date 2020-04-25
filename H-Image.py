@@ -1,6 +1,15 @@
 import cv2
 import numpy as np
 
+fabric1 = cv2.imread('1.jpg',0)
+fabric2 = cv2.imread('2.jpg',0)
+fabric3 = cv2.imread('3.jpg',0)
+fabric4 = cv2.imread('4.jpg',0)
+fabric5 = cv2.imread('5.jpg',0)
+fabric6 = cv2.imread('6.jpg',0)
+fabric7 = cv2.imread('7.jpg',0)
+fabric8 = cv2.imread('8.jpg',0)
+
 def dft(img):
     f = np.fft.fft2(img)  
     ft = np.fft.fftshift(f)
@@ -75,17 +84,8 @@ def dialation(img, kernel, n):
 
 
 #--------------------Computation Part------------
-fabric1 = cv2.imread('1.jpg',0)
-fabric2 = cv2.imread('2.jpg',0)
-fabric3 = cv2.imread('3.jpg',0)
-fabric4 = cv2.imread('4.jpg',0)
-fabric5 = cv2.imread('5.jpg',0)
-fabric6 = cv2.imread('6.jpg',0)
-fabric7 = cv2.imread('7.jpg',0)
-fabric8 = cv2.imread('8.jpg',0)
-
-
 #kernels to use
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 kernel1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
 kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT,(7,2))
 kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT,(9,1))
@@ -115,10 +115,6 @@ new_img = erosion(new_img, kernel1, 5) #erodes the image with kernel1 5 times
 new_img = dialation(new_img, kernel1, 2) #dilates the image with kernel1 1 time
 cv2.imwrite('detect_2.jpg', new_img)
 
-
-
-#----------------------Fabric3--------------------------
-#Need to figure out different method
 
 
 #----------------------Fabric4---------------------------
@@ -153,6 +149,36 @@ fabric6 = cv2.equalizeHist(fabric6) #equalize the image
 ret, new_img = cv2.threshold(fabric6,200,255,cv2.THRESH_BINARY) #convert to binary image
 new_img = cv2.medianBlur(new_img, 11) #Removes the salt noise
 cv2.imwrite('detect_6.jpg',new_img)
+
+
+
+#----------------------Fabric8---------------------------
+fabric8 = cv2.equalizeHist(fabric8)
+fabric8 = high_pass_filter(fabric8, 50) #Use high pass filter to filter low frequency component
+new_img = HIPI(fabric8) #get the H-Image
+ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY) #convert to binary image
+new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
+new_img = erosion(new_img, kernel, 1)
+new_img = dialation(new_img, kernel1, 1)
+cv2.imshow('detect_8.jpg', new_img)
+
+
+
+
+
+
+
+
+#----------------------Fabric3---------------------------
+
+
+#----------------------Fabric7---------------------------
+fabric7 = cv2.equalizeHist(fabric7) #equalize the image
+ret, new_img = cv2.threshold(fabric7,200,255,cv2.THRESH_BINARY) #convert to binary image
+
+#cv2.imshow('detect_7.jpg',new_img)
+
+
 
 
 
