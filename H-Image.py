@@ -86,46 +86,59 @@ fabric8 = cv2.imread('8.jpg',0)
 
 
 #kernels to use
-kernel1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
+kernel1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
 kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT,(7,2))
 kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT,(9,1))
 
-'''
 #----------------------Fabric1--------------------------
 fabric1 = cv2.equalizeHist(fabric1) #equalize the image
-fabric1 = high_pass_filter(fabric1, 50) #Use high pass filter to filter low frequency component
-new_img = HIPI(fabric1) #get the H-Image
-ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY_INV) #convert to binary image
-
-new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
+ret, new_img = cv2.threshold(fabric1, 215,255,cv2.THRESH_BINARY) #convert to binary image
+new_img = erosion(new_img, kernel2, 1) #removes excess noise from the image
+new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
+new_img = dialation(new_img, kernel3, 5) #dilates the image 5 times
 cv2.imwrite('detect_1.jpg', new_img)
+
+#---old code for fabric1---
+#fabric1 = high_pass_filter(fabric1, 50) #Use high pass filter to filter low frequency component
+#new_img = HIPI(fabric1) #get the H-Image
+#ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY_INV) #convert to binary image
+
+#new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
+#cv2.imshow('detect_1.jpg', new_img)
+
 
 
 #----------------------Fabric2--------------------------
 fabric2 = cv2.equalizeHist(fabric2) #equalize the image
-fabric2 = high_pass_filter(fabric2, 50) #Use high pass filter to filter low frequency component
-new_img = HIPI(fabric2) #get the H-Image
-ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY_INV) #convert to binary image
-
-new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
+ret, new_img = cv2.threshold(fabric2,20,255,cv2.THRESH_BINARY) #convert to binary image
+new_img = erosion(new_img, kernel1, 5) #erodes the image with kernel1 5 times
+new_img = dialation(new_img, kernel1, 2) #dilates the image with kernel1 1 time
 cv2.imwrite('detect_2.jpg', new_img)
+
+
 
 #----------------------Fabric3--------------------------
 #Need to figure out different method
 
 
 #----------------------Fabric4---------------------------
-#fabric4 = cv2.equalizeHist(fabric4) #equalize the image
-fabric4 = high_pass_filter(fabric4, 50) #Use high pass filter to filter low frequency component
-new_img = HIPI(fabric4) #get the H-Image
-ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY) #convert to binary image
-
-new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
-new_img = erosion(new_img, kernel2, 1)
-new_img = dialation(new_img, kernel3, 1)
+fabric4 = cv2.equalizeHist(fabric4) #equalize the image
+ret, new_img = cv2.threshold(fabric4,0,150,cv2.THRESH_BINARY_INV) #convert to binary image
+new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
+new_img = dialation(new_img, kernel1, 1)
 cv2.imwrite('detect_4.jpg', new_img)
 
-'''
+#---old code for fabric4 ----
+#fabric4 = high_pass_filter(fabric4, 50) #Use high pass filter to filter low frequency component
+#new_img = HIPI(fabric4) #get the H-Image
+#ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY) #convert to binary image
+
+#new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
+#new_img = erosion(new_img, kernel2, 1)
+#new_img = dialation(new_img, kernel3, 1)
+#cv2.imshow('detect_4.jpg', new_img)
+
+
 
 #----------------------Fabric5---------------------------
 fabric5 = cv2.equalizeHist(fabric5) #equalize the image
@@ -133,9 +146,6 @@ ret, new_img = cv2.threshold(fabric5,0,255,cv2.THRESH_BINARY_INV) #convert to bi
 new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
 new_img = dialation(new_img, kernel3, 4) #dilates the image and joins the white points
 cv2.imwrite('detect_5.jpg', new_img)
-
-
-
 
 
 
