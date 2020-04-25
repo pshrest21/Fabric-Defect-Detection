@@ -98,7 +98,7 @@ new_img = HIPI(fabric1) #get the H-Image
 ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY_INV) #convert to binary image
 
 new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
-#cv2.imshow('detect_1', new_img)
+cv2.imwrite('detect_1.jpg', new_img)
 
 
 #----------------------Fabric2--------------------------
@@ -108,7 +108,7 @@ new_img = HIPI(fabric2) #get the H-Image
 ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY_INV) #convert to binary image
 
 new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
-#cv2.imshow('detect_2', new_img)
+cv2.imwrite('detect_2.jpg', new_img)
 
 #----------------------Fabric3--------------------------
 #Need to figure out different method
@@ -123,7 +123,7 @@ ret, new_img = cv2.threshold(new_img,20,255,cv2.THRESH_BINARY) #convert to binar
 new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
 new_img = erosion(new_img, kernel2, 1)
 new_img = dialation(new_img, kernel3, 1)
-cv2.imshow('detect_4', new_img)
+cv2.imwrite('detect_4.jpg', new_img)
 
 
 
