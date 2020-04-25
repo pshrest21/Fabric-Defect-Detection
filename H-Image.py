@@ -148,6 +148,11 @@ new_img = dialation(new_img, kernel3, 4) #dilates the image and joins the white 
 cv2.imwrite('detect_5.jpg', new_img)
 
 
+#----------------------Fabric6---------------------------
+fabric6 = cv2.equalizeHist(fabric6) #equalize the image
+ret, new_img = cv2.threshold(fabric6,200,255,cv2.THRESH_BINARY) #convert to binary image
+new_img = cv2.medianBlur(new_img, 11) #Removes the salt noise
+cv2.imwrite('detect_6.jpg',new_img)
 
 
 
