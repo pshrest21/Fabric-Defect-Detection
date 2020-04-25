@@ -58,9 +58,9 @@ def gaussian_filter(img, figure_size):
     new_image = cv2.blur(img, (figure_size, figure_size))
     return np.array(new_image) 
 
-def canny_edge(img, figure_size):
+def canny_edge(img, x,y, n):
     img = np.uint8(img)
-    new_image = cv2.Canny(img, figure_size, figure_size)
+    new_image = cv2.Canny(img, x, y, apertureSize=n)
     return np.array(new_image)
 
 def erosion(img, kernel, n):
@@ -88,9 +88,9 @@ fabric8 = cv2.imread('8.jpg',0)
 #kernels to use
 kernel1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT,(7,2))
-kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT,(9,2))
+kernel3 = cv2.getStructuringElement(cv2.MORPH_RECT,(9,1))
 
-
+'''
 #----------------------Fabric1--------------------------
 fabric1 = cv2.equalizeHist(fabric1) #equalize the image
 fabric1 = high_pass_filter(fabric1, 50) #Use high pass filter to filter low frequency component
@@ -124,6 +124,16 @@ new_img = cv2.medianBlur(new_img, 5) #Removes the salt noise
 new_img = erosion(new_img, kernel2, 1)
 new_img = dialation(new_img, kernel3, 1)
 cv2.imwrite('detect_4.jpg', new_img)
+
+'''
+
+#----------------------Fabric5---------------------------
+fabric5 = cv2.equalizeHist(fabric5) #equalize the image
+ret, new_img = cv2.threshold(fabric5,0,255,cv2.THRESH_BINARY_INV) #convert to binary image
+new_img = cv2.medianBlur(new_img, 3) #Removes the salt noise
+new_img = dialation(new_img, kernel3, 4) #dilates the image and joins the white points
+cv2.imwrite('detect_5.jpg', new_img)
+
 
 
 
